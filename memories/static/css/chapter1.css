@@ -63,7 +63,27 @@ body {
 .collage img:hover {
     transform: scale(1.05);
 }
-
+/* Styling for the comment on hover */
 .collage-item {
     text-align: center;
+    position: relative; /* This is crucial for positioning the comment */
+    overflow: hidden; /* Hides content that overflows */
+}
+
+.image-comment {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(42, 96, 153, 0.7); /* A semi-transparent Blue Jay */
+    color: #fff;
+    opacity: 0; /* Hides the text by default */
+    transform: translateY(100%);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.collage-item:hover .image-comment {
+    opacity: 1; /* Shows the text on hover */
+    transform: translateY(0);
 }
