@@ -55,7 +55,14 @@
         <h2>My Appreciation to You</h2>
         <p>This section is all about the little things I love about you.</p>
         <div class="collage">
-          <!-- add collage items here later -->
+          {% for image in appreciation_images %}
+          <div class="collage-item">
+            <img src="{{ image.image.url }}" alt="Appreciation Image">
+            {% if image.comment %}
+            <div class="image-comment">{{ image.comment }}</div>
+            {% endif %}
+          </div>
+          {% endfor %}
         </div>
         <button class="next-chapter" data-target="chapter3">Next Chapter</button>
       </div>
