@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import AppreciationImage, Memory
+from .models import AppreciationImage, Memory, ChapterMusic
 
 class TimelineView(LoginRequiredMixin, TemplateView):
     template_name = 'memories/timeline.html'
@@ -12,4 +12,11 @@ class TimelineView(LoginRequiredMixin, TemplateView):
 
         # Fetch all appreciation images from the database
         context['appreciation_images'] = AppreciationImage.objects.all().order_by('id')
+
+        # Pass music URLs
+        chapter_music = {}
+        for music in ChapterMusic.objects.all():
+            chapter_music[music.chapter] = music.music_file.url
+        context['chapter_music'] = chapter_music
+
         return context

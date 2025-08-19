@@ -5,6 +5,17 @@ document.addEventListener("DOMContentLoaded", function () {
     "#chapter1 .page:not(#welcome-page):not(#end-of-chapter1)",
   );
   const endOfChapter1 = document.getElementById("end-of-chapter1");
+  const audioElement = document.getElementById("chapter-audio");
+
+  function playChapterMusic(chapterId) {
+    const url = chapterMusic[chapterId];
+    if (url) {
+      audioElement.src = url;
+      audioElement.play().catch(() => {
+        console.log("Autoplay blocked, will play on user interaction");
+      });
+    }
+  }
 
   // Start Journey button
   document.getElementById("next-button").addEventListener("click", () => {
@@ -14,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       endOfChapter1.classList.remove("hidden");
     }
+    playChapterMusic("chapter1");
   });
 
   // Next / Prev buttons for chapter 1 memories
@@ -54,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (targetChapter) {
         if (currentChapter) currentChapter.classList.add("hidden");
         targetChapter.classList.remove("hidden");
+        playChapterMusic(targetChapter.id);
       }
     });
   });
@@ -65,15 +78,17 @@ document.addEventListener("DOMContentLoaded", function () {
       const currentChapter = button.closest(".chapter");
 
       if (button.classList.contains("return-home")) {
-        // Logic for "Back to Start" button
+        // Back to Start
         chapters.forEach((ch) => ch.classList.add("hidden"));
         document.getElementById("chapter1").classList.remove("hidden");
         welcomePage.classList.remove("hidden");
+        playChapterMusic("chapter1");
       } else if (targetId) {
-        // Logic for "Prev Chapter" button
+        // Prev Chapter
         const targetChapter = document.getElementById(targetId);
         if (currentChapter) currentChapter.classList.add("hidden");
         targetChapter.classList.remove("hidden");
+        playChapterMusic(targetChapter.id);
       }
     });
   });
