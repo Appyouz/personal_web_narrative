@@ -20,3 +20,11 @@ class MemoryImage(models.Model):
 
     def __str__(self):
         return f'Image for {self.memory.title}'
+
+
+class AppreciationImage(models.Model):
+    image = CloudinaryField('image')
+    comment = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.comment if self.comment else 'Appreciation Image'
