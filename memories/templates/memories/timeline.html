@@ -14,46 +14,28 @@
 
 <body>
   <main>
-    <section id="chapter1" class="chapter">
-      <div id="welcome-page" class="page">
-        <h1>Welcome to our Journey</h1>
-        <button id="next-button">Click me</button>
-      </div>
-      <div id="first-meet-page" class="page hidden">
-        <h2>Our First Moments</h2>
-        <div class="collage">
-        </div>
-        <button class="next-page">Next</button>
-      </div>
-      <div id="funny-moments-page" class="page hidden">
-        <h2>Our Funny Moments</h2>
-        <div class="collage">
-        </div>
-        <button class="next-page">Next</button>
-      </div>
-      <div id="more-moments-page" class="page hidden">
-        <h2>More Memories</h2>
-        <div class="collage">
-        </div>
-      </div>
-    </section>
-
-    <section id="chapter2" class="chapter hidden">
-      <div id="her-letters-page" class="page">
-        <h2>My Appreciation to You</h2>
-        <div class="collage">
-        </div>
-      </div>
-    </section>
-
-    <section id="chapter3" class="chapter hidden">
-      <div id="my-letter-page" class="page">
-        <h2>A Letter From Me</h2>
-        <div class="letter-content">
-        </div>
-      </div>
-    </section>
   </main>
+  <section id="chapter1" class="chapter">
+    <div id="welcome-page" class="page">
+      <h1>Welcome to our Journey</h1>
+      <button id="next-button">Click me</button>
+    </div>
+
+    {% for memory in memories %}
+    <div id="{{ memory.title|slugify }}-page" class="page hidden">
+      <h2>{{ memory.title }}</h2>
+      <div class="collage">
+        <div class="collage-item">
+          <img src="{{ memory.image.url }}" alt="{{ memory.title }}">
+          <p>{{ memory.description }}</p>
+        </div>
+      </div>
+      <button class="next-page">Next</button>
+    </div>
+    {% endfor %}
+  </section>
+
+
   <script src="{% static 'js/script.js' %}"></script>
 </body>
 
