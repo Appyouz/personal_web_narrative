@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const welcomePage = document.getElementById("welcome-page");
+  const chapters = document.querySelectorAll(".chapter");
   const dynamicallyRenderedPages = document.querySelectorAll(
     "#chapter1 .page:not(#welcome-page):not(#end-of-chapter1)",
   );
@@ -57,28 +58,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Prev Chapter buttons
-  document.querySelectorAll(".prev-chapter").forEach((button) => {
+  // Prev Chapter buttons & Return Home
+  document.querySelectorAll(".prev-chapter, .return-home").forEach((button) => {
     button.addEventListener("click", () => {
       const targetId = button.dataset.target;
-      const targetChapter = document.getElementById(targetId);
       const currentChapter = button.closest(".chapter");
 
-      if (targetChapter) {
+      if (button.classList.contains("return-home")) {
+        // Logic for "Back to Start" button
+        chapters.forEach((ch) => ch.classList.add("hidden"));
+        document.getElementById("chapter1").classList.remove("hidden");
+        welcomePage.classList.remove("hidden");
+      } else if (targetId) {
+        // Logic for "Prev Chapter" button
+        const targetChapter = document.getElementById(targetId);
         if (currentChapter) currentChapter.classList.add("hidden");
         targetChapter.classList.remove("hidden");
       }
-    });
-  });
-
-  // Return Home buttons
-  document.querySelectorAll(".return-home").forEach((button) => {
-    button.addEventListener("click", () => {
-      document
-        .querySelectorAll(".chapter")
-        .forEach((ch) => ch.classList.add("hidden"));
-      document.getElementById("chapter1").classList.remove("hidden");
-      welcomePage.classList.remove("hidden");
     });
   });
 });
