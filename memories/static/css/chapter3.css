@@ -1,0 +1,56 @@
+/* --- Chapter 3 Colors & Layout --- */
+#chapter3 {
+    background-color: #E6E6FA; /* Soft Lilac */
+    color: #000000; /* Black */
+    text-align: left;
+}
+
+#chapter3 .page {
+    justify-content: flex-start;
+    align-items: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+#chapter3 h2 {
+    color: #4B0082; /* Deep Berry */
+    margin-bottom: 40px;
+}
+
+#chapter3 .letter-content {
+    width: 90%;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    line-height: 1.8;
+    font-size: 1.1rem;
+    white-space: pre-wrap; /* Preserve whitespace for formatting */
+}
+
+/* --- Return Home Button --- */
+.return-home {
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    background-color: #000000;
+    color: #fff;
+    transition: all 0.3s ease;
+    margin-top: 40px;
+}
+
+.return-home:hover {
+    background-color: transparent;
+    color: #000000;
+}
+
+/* --- Mobile styles for chapter 3 --- */
+@media (max-width: 600px) {
+    #chapter3 .letter-content {
+        padding: 20px;
+        font-size: 1rem;
+    }
+}

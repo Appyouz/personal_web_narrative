@@ -1,3 +1,4 @@
+/* --- Global Body & Typography --- */
 body {
     background-color: #E6E6FA; /* Soft Lilac */
     color: #4B0082; /* Deep Berry */
@@ -8,7 +9,64 @@ h1, h2 {
     color: #2A6099; /* Blue Jay */
 }
 
-
+/* --- Hide chapters by default --- */
 .chapter.hidden {
     display: none;
+}
+
+/* --- Unified Button Styles --- */
+button,
+.next-page,
+.prev-page,
+.next-chapter,
+.prev-chapter,
+.return-home {
+    padding: 12px 28px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 2px solid #2A6099; /* Blue Jay */
+    border-radius: 12px; /* Slightly rounder for cute look */
+    background-color: #fff;
+    color: #2A6099;
+    font-weight: 600;
+    transition: all 0.3s ease, transform 0.2s ease-in-out;
+    margin: 10px 5px;
+    box-shadow: 0 4px 6px rgba(42, 96, 153, 0.3);
+}
+
+/* Hover effect: color change + subtle lift */
+button:hover,
+.next-page:hover,
+.prev-page:hover,
+.next-chapter:hover,
+.prev-chapter:hover,
+.return-home:hover {
+    background-color: #2A6099;
+    color: #fff;
+    transform: translateY(-3px); /* little lift */
+    box-shadow: 0 6px 12px rgba(42, 96, 153, 0.4);
+}
+
+/* Active press effect */
+button:active,
+.next-page:active,
+.prev-page:active,
+.next-chapter:active,
+.prev-chapter:active,
+.return-home:active {
+    transform: translateY(1px); /* simulate pressing down */
+    box-shadow: 0 3px 6px rgba(42, 96, 153, 0.3);
+}
+
+/* --- Optional Pulse Animation for Next Buttons --- */
+@keyframes pulse {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-3px) scale(1.05); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* Add pulse only to main next buttons for fun */
+.next-page,
+.next-chapter {
+    animation: pulse 2s infinite ease-in-out;
 }

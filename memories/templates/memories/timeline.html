@@ -31,14 +31,17 @@
           <div class="collage-item">
             <img src="{{ image.image.url }}" alt="{{ memory.title }}">
             {% if image.comment %}
-            <div class="comment-container">
-              <p class="image-comment">{{ image.comment }}</p>
-            </div>
+            <div class="image-comment">{{ image.comment }}</div>
             {% endif %}
           </div>
           {% endfor %}
         </div>
-        <button class="next-page">Next</button>
+        <div class="navigation-buttons">
+          {% if not forloop.first %}
+          <button class="prev-page">Prev</button>
+          {% endif %}
+          <button class="next-page">Next</button>
+        </div>
       </div>
       {% endfor %}
 
@@ -64,7 +67,26 @@
           </div>
           {% endfor %}
         </div>
-        <button class="next-chapter" data-target="chapter3">Next Chapter</button>
+        <div class="navigation-buttons">
+          <button class="prev-chapter" data-target="chapter1">Prev Chapter</button>
+          <button class="next-chapter" data-target="chapter3">Next Chapter</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 3 -->
+    <section id="chapter3" class="chapter hidden">
+      <div class="page">
+        <h2>A Letter for You</h2>
+        <div class="letter-content">
+          <p>My dearest...</p>
+          <p>This is where your personal letter will go. You can write your heartfelt message here, surrounded by the
+            beautiful design.</p>
+        </div>
+        <div class="navigation-buttons">
+          <button class="prev-chapter" data-target="chapter2">Prev Chapter</button>
+          <button class="return-home">Back to Start</button>
+        </div>
       </div>
     </section>
 

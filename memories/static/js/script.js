@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   );
   const endOfChapter1 = document.getElementById("end-of-chapter1");
 
-  // Handle "Start the Journey"
+  // Start Journey button
   document.getElementById("next-button").addEventListener("click", () => {
     welcomePage.classList.add("hidden");
     if (dynamicallyRenderedPages.length > 0) {
@@ -15,9 +15,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Handle "Next" inside memory pages
+  // Next / Prev buttons for chapter 1 memories
   dynamicallyRenderedPages.forEach((page, index) => {
     const nextButton = page.querySelector(".next-page");
+    const prevButton = page.querySelector(".prev-page");
+
     if (nextButton) {
       nextButton.addEventListener("click", () => {
         page.classList.add("hidden");
@@ -28,9 +30,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     }
+
+    if (prevButton) {
+      prevButton.addEventListener("click", () => {
+        page.classList.add("hidden");
+        if (index > 0) {
+          dynamicallyRenderedPages[index - 1].classList.remove("hidden");
+        } else {
+          welcomePage.classList.remove("hidden");
+        }
+      });
+    }
   });
 
-  // Handle "Next Chapter" buttons
+  // Next Chapter buttons
   document.querySelectorAll(".next-chapter").forEach((button) => {
     button.addEventListener("click", () => {
       const targetId = button.dataset.target;
@@ -38,11 +51,34 @@ document.addEventListener("DOMContentLoaded", function () {
       const currentChapter = button.closest(".chapter");
 
       if (targetChapter) {
-        if (currentChapter) {
-          currentChapter.classList.add("hidden");
-        }
+        if (currentChapter) currentChapter.classList.add("hidden");
         targetChapter.classList.remove("hidden");
       }
+    });
+  });
+
+  // Prev Chapter buttons
+  document.querySelectorAll(".prev-chapter").forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.target;
+      const targetChapter = document.getElementById(targetId);
+      const currentChapter = button.closest(".chapter");
+
+      if (targetChapter) {
+        if (currentChapter) currentChapter.classList.add("hidden");
+        targetChapter.classList.remove("hidden");
+      }
+    });
+  });
+
+  // Return Home buttons
+  document.querySelectorAll(".return-home").forEach((button) => {
+    button.addEventListener("click", () => {
+      document
+        .querySelectorAll(".chapter")
+        .forEach((ch) => ch.classList.add("hidden"));
+      document.getElementById("chapter1").classList.remove("hidden");
+      welcomePage.classList.remove("hidden");
     });
   });
 });
