@@ -10,7 +10,16 @@
 <body>
   <h1>Welcome to our Journey!</h1>
 
-  <p>This is where the magic will happen. You can see this page because you are logged in.</p>
+  {% for memory in memories %}
+  <section>
+    <h2>{{ memory.title }}</h2>
+    <p>{{ memory.description }}</p>
+    {% if memory.image %}
+    <img src="{{ memory.image.url }}" alt="{{ memory.title }}">
+    {% endif %}
+  </section>
+  <hr>
+  {% endfor %}
 
   <p>
     <a href="{% url 'logout' %}">Log Out</a>
