@@ -1,3 +1,4 @@
+
 /* --- Global Body & Typography --- */
 body {
     background-color: #E6E6FA; /* Soft Lilac */
@@ -9,9 +10,26 @@ h1, h2 {
     color: #2A6099; /* Blue Jay */
 }
 
-/* --- Hide chapters by default --- */
+/*
+    --- Smooth Transitions and Hiding FIX ---
+
+    This is the core change. Instead of using 'display: none',
+    we now use a combination of opacity, visibility, and height
+    to allow for smooth fade-in and out effects between chapters.
+*/
 .chapter.hidden {
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 1s ease-in-out, visibility 1s, height 1s linear;
+}
+
+.chapter:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+    height: 100vh;
+    transition: opacity 1s ease-in-out, visibility 1s, height 1s linear;
 }
 
 /* --- Unified Button Styles --- */
