@@ -28,7 +28,9 @@
           <div class="collage-item">
             <img src="{{ image.image.url }}" alt="{{ memory.title }}">
             {% if image.comment %}
-            <p class="image-comment">{{ image.comment }}</p>
+            <div class="comment-container">
+              <p class="image-comment">{{ image.comment }}</p>
+            </div>
             {% endif %}
           </div>
           {% endfor %}
