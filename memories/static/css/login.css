@@ -1,0 +1,110 @@
+/* --- Login Page Container --- */
+body {
+    background-color: #E6E6FA; /* Soft Lilac */
+    color: #4B0082; /* Deep Berry */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+/* --- Quote Animation --- */
+.login-quote {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+}
+
+/* --- Form Styling --- */
+.login-form {
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 25px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    width: 100%;
+    transform: translateY(50px);
+    opacity: 0;
+    animation: slideUp 1s forwards 2s; /* wait for quote fade */
+}
+
+.login-form p {
+    margin: 15px 0;
+    font-size: 1rem;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 2px solid #2A6099;
+    width: 100%;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* --- Login Button --- */
+.login-form button {
+    margin-top: 20px;
+    padding: 12px 28px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 2px solid #2A6099;
+    border-radius: 12px;
+    background-color: #fff;
+    color: #2A6099;
+    font-weight: 600;
+    transition: all 0.3s ease, transform 0.2s ease-in-out;
+    box-shadow: 0 4px 6px rgba(42,96,153,0.3);
+}
+
+.login-form button:hover {
+    background-color: #2A6099;
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(42,96,153,0.4);
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 480px) {
+    .login-quote {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .login-form {
+        padding: 20px;
+    }
+
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+        font-size: 0.95rem;
+        padding: 8px 10px;
+    }
+
+    .login-form button {
+        padding: 10px 22px;
+        font-size: 0.95rem;
+    }
+}
