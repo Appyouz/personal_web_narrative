@@ -1,4 +1,11 @@
 from django.contrib import admin
-from .models import Memory
+from .models import Memory, MemoryImage
 
-admin.site.register(Memory)
+class MemoryImageInline(admin.StackedInline):
+    model = MemoryImage
+    extra = 1
+
+class MemoryAdmin(admin.ModelAdmin):
+    inlines = [MemoryImageInline]
+
+admin.site.register(Memory, MemoryAdmin)
