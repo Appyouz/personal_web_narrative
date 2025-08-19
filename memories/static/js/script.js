@@ -1,33 +1,33 @@
 // Chapter 1: Page Transition Logic
 document.addEventListener('DOMContentLoaded', function() {
     const welcomePage = document.getElementById('welcome-page');
-    const firstMeetPage = document.getElementById('first-meet-page');
-    const funnyMomentsPage = document.getElementById('funny-moments-page');
-    const moreMomentsPage = document.getElementById('more-moments-page');
-    
     const nextButton = document.getElementById('next-button');
-    const nextButtons = document.querySelectorAll('.next-page');
+    const chapter1 = document.getElementById('chapter1');
+    const dynamicallyRenderedPages = chapter1.querySelectorAll('.page:not(#welcome-page)');
 
     if (nextButton) {
         nextButton.addEventListener('click', () => {
             welcomePage.classList.add('hidden');
-            firstMeetPage.classList.remove('hidden');
+            if (dynamicallyRenderedPages.length > 0) {
+                dynamicallyRenderedPages[0].classList.remove('hidden');
+            }
         });
     }
 
-    if (nextButtons) {
-        // This is a more flexible way to handle multiple "Next" buttons
+    if (dynamicallyRenderedPages) {
         let currentPageIndex = 0;
-        const pages = [firstMeetPage, funnyMomentsPage, moreMomentsPage];
-        
-        nextButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                if (currentPageIndex < pages.length - 1) {
-                    pages[currentPageIndex].classList.add('hidden');
-                    currentPageIndex++;
-                    pages[currentPageIndex].classList.remove('hidden');
-                }
-            });
+
+        dynamicallyRenderedPages.forEach((page, index) => {
+            const nextButton = page.querySelector('.next-page');
+            if (nextButton) {
+                nextButton.addEventListener('click', () => {
+                    if (currentPageIndex < dynamicallyRenderedPages.length - 1) {
+                        page.classList.add('hidden');
+                        currentPageIndex++;
+                        dynamicallyRenderedPages[currentPageIndex].classList.remove('hidden');
+                    }
+                });
+            }
         });
     }
 });
