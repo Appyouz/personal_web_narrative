@@ -1,33 +1,48 @@
-// Chapter 1: Page Transition Logic
-document.addEventListener('DOMContentLoaded', function() {
-    const welcomePage = document.getElementById('welcome-page');
-    const nextButton = document.getElementById('next-button');
-    const chapter1 = document.getElementById('chapter1');
-    const dynamicallyRenderedPages = chapter1.querySelectorAll('.page:not(#welcome-page)');
+document.addEventListener("DOMContentLoaded", function () {
+  const welcomePage = document.getElementById("welcome-page");
+  const dynamicallyRenderedPages = document.querySelectorAll(
+    "#chapter1 .page:not(#welcome-page):not(#end-of-chapter1)",
+  );
+  const endOfChapter1 = document.getElementById("end-of-chapter1");
 
+  // Handle "Start the Journey"
+  document.getElementById("next-button").addEventListener("click", () => {
+    welcomePage.classList.add("hidden");
+    if (dynamicallyRenderedPages.length > 0) {
+      dynamicallyRenderedPages[0].classList.remove("hidden");
+    } else {
+      endOfChapter1.classList.remove("hidden");
+    }
+  });
+
+  // Handle "Next" inside memory pages
+  dynamicallyRenderedPages.forEach((page, index) => {
+    const nextButton = page.querySelector(".next-page");
     if (nextButton) {
-        nextButton.addEventListener('click', () => {
-            welcomePage.classList.add('hidden');
-            if (dynamicallyRenderedPages.length > 0) {
-                dynamicallyRenderedPages[0].classList.remove('hidden');
-            }
-        });
+      nextButton.addEventListener("click", () => {
+        page.classList.add("hidden");
+        if (index < dynamicallyRenderedPages.length - 1) {
+          dynamicallyRenderedPages[index + 1].classList.remove("hidden");
+        } else {
+          endOfChapter1.classList.remove("hidden");
+        }
+      });
     }
+  });
 
-    if (dynamicallyRenderedPages) {
-        let currentPageIndex = 0;
+  // Handle "Next Chapter" buttons
+  document.querySelectorAll(".next-chapter").forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.target;
+      const targetChapter = document.getElementById(targetId);
+      const currentChapter = button.closest(".chapter");
 
-        dynamicallyRenderedPages.forEach((page, index) => {
-            const nextButton = page.querySelector('.next-page');
-            if (nextButton) {
-                nextButton.addEventListener('click', () => {
-                    if (currentPageIndex < dynamicallyRenderedPages.length - 1) {
-                        page.classList.add('hidden');
-                        currentPageIndex++;
-                        dynamicallyRenderedPages[currentPageIndex].classList.remove('hidden');
-                    }
-                });
-            }
-        });
-    }
+      if (targetChapter) {
+        if (currentChapter) {
+          currentChapter.classList.add("hidden");
+        }
+        targetChapter.classList.remove("hidden");
+      }
+    });
+  });
 });

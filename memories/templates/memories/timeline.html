@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,12 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A Journey of Us</title>
+  {% load static %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="{% static 'css/chapter1.css' %}">
+  <link rel="stylesheet" href="{% static 'css/chapter2.css' %}">
+  <link rel="stylesheet" href="{% static 'css/chapter3.css' %}">
 </head>
 
 <body>
   <main>
+    <!-- Chapter 1 -->
     <section id="chapter1" class="chapter">
       <div id="welcome-page" class="page">
         <h1>Welcome to our Journey</h1>
@@ -38,6 +41,24 @@
         <button class="next-page">Next</button>
       </div>
       {% endfor %}
+
+      <div id="end-of-chapter1" class="page hidden">
+        <h2>And that's just the beginning...</h2>
+        <p>...click below to continue our journey.</p>
+        <button class="next-chapter" data-target="chapter2">Go to Chapter 2</button>
+      </div>
+    </section>
+
+    <!-- Chapter 2 -->
+    <section id="chapter2" class="chapter hidden">
+      <div class="page">
+        <h2>My Appreciation to You</h2>
+        <p>This section is all about the little things I love about you.</p>
+        <div class="collage">
+          <!-- add collage items here later -->
+        </div>
+        <button class="next-chapter" data-target="chapter3">Next Chapter</button>
+      </div>
     </section>
 
   </main>

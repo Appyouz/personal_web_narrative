@@ -8,4 +8,7 @@ h1, h2 {
     color: #2A6099; /* Blue Jay */
 }
 
-/* More styles will go here later */
+
+.chapter.hidden {
+    display: none;
+}
