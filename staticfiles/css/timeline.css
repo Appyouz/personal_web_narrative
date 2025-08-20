@@ -1,0 +1,298 @@
+/* --- Page Layout --- */
+.page {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.page.active {
+  display: flex;
+  opacity: 1;
+}
+
+.hidden {
+  display: none !important;
+  opacity: 0;
+}
+
+/* --- Chapter 1 Colors & Layout --- */
+.chapter1 {
+  background-color: #E6E6FA;
+  color: #4B0082;
+}
+
+/* --- Chapter 2 Colors & Layout --- */
+.chapter2 {
+  background-color: #2A6099;
+  color: #40E0D0;
+}
+
+.chapter2 .collage {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: minmax(100px, auto);
+  grid-gap: 20px;
+  width: 90%;
+  max-width: 1000px;
+}
+
+.chapter2 .collage-item {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.chapter2 .collage-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* --- Chapter 3 Colors & Layout --- */
+.chapter3 {
+  background-color: #E6E6FA;
+  color: #000000;
+  text-align: left;
+}
+
+.chapter3 .page {
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.chapter3 h2 {
+  color: #4B0082;
+  margin-bottom: 40px;
+}
+
+.chapter3 .letter-content {
+  width: 90%;
+  max-width: 800px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  line-height: 1.8;
+  font-size: 1.1rem;
+  white-space: pre-wrap;
+}
+
+/* --- Collage Layout --- */
+.collage {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-gap: 20px;
+  width: 95%;
+  max-width: 1000px;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+}
+
+/* --- Polaroid / Photo Frame Style --- */
+.collage-item {
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: transform 0.3s ease-in-out;
+}
+
+.collage-item:hover {
+  transform: translateY(-5px);
+}
+
+.collage-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* --- Comment Below Each Image --- */
+.image-comment {
+  font-size: 0.85rem;
+  color: #4B0082;
+  font-style: italic;
+  margin: 0;
+  padding: 5px;
+  word-wrap: break-word;
+}
+
+/* --- Whats Next Buttons --- */
+.whats-next-buttons {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.whats-next-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.whats-next-btn:hover {
+  transform: scale(1.1);
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 600px) {
+  .collage {
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 12px;
+  }
+
+  .collage-item img {
+    max-height: 150px;
+  }
+
+  .image-comment {
+    font-size: 0.8rem;
+  }
+
+  .chapter2 .collage {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter3 .letter-content {
+    padding: 20px;
+    font-size: 1rem;
+  }
+
+  .whats-next-buttons {
+    flex-direction: column;
+  }
+}
+
+/* Animation for sequential image reveal - Much slower version */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Initially hide all collage items and comments */
+.collage-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: none;
+}
+
+.image-comment {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: none;
+}
+
+/* Class to animate items sequentially */
+.collage-item.animate-sequential {
+  animation: fadeInUp 1.8s ease forwards; /* Increased to 1.8 seconds */
+}
+
+.collage-item.animate-sequential .image-comment {
+  animation: fadeInUp 1.2s ease 1.5s forwards; /* Comment appears 1.5s after image, animation takes 1.2s */
+}
+
+/* Add a smooth background color transition between pages */
+.chapter1, .chapter2, .chapter3, .chapter-post-3 {
+  transition: background-color 1.5s ease-in-out;
+}
+
+/* Optional: Add a very subtle pulse to the current image */
+.collage-item.animate-sequential {
+  animation: fadeInUp 1.8s ease forwards;
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+}
+
+.collage-item.animate-sequential:hover {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  transition: box-shadow 0.5s ease;
+}
+
+/* Styles for the new pages */
+#give-up-page {
+  background-color: #6a0dad;
+  color: #ffb6c1;
+}
+
+#choice-page {
+  background-color: #9370db;
+  color: #fff;
+}
+
+#final-page {
+  background: linear-gradient(135deg, #6a0dad, #9370db);
+  color: #fff;
+}
+
+/* Style for the give-up page button */
+#give-up-page button {
+  background-color: #ffb6c1;
+  color: #6a0dad;
+  border: 2px solid #ff69b4;
+}
+
+#give-up-page button:hover {
+  background-color: #ff69b4;
+  color: #fff;
+}
+
+/* Style for the choice page button */
+#choice-page button {
+  background-color: #ffd700;
+  color: #6a0dad;
+  border: 2px solid #ffed4e;
+}
+
+#choice-page button:hover {
+  background-color: #ffed4e;
+  color: #6a0dad;
+}
+/* Make Give-Up and Final Page text more visible */
+#give-up-page h2,
+#give-up-page p {
+  color: #ffe6f0; /* bright pinkish for contrast */
+}
+
+#final-page h2,
+#final-page p {
+  color: #ffffff; /* pure white for high contrast */
+}
+
+.welcome-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
