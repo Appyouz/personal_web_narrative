@@ -1,4 +1,3 @@
-
 /* --- Global Body & Typography --- */
 body {
     background-color: #E6E6FA; /* Soft Lilac */
@@ -11,11 +10,10 @@ h1, h2 {
 }
 
 /*
-    --- Smooth Transitions and Hiding FIX ---
+    --- Smooth Transitions and Hiding Fix ---
 
-    This is the core change. Instead of using 'display: none',
-    we now use a combination of opacity, visibility, and height
-    to allow for smooth fade-in and out effects between chapters.
+    Instead of 'display: none', we use opacity, visibility, and height
+    for smooth fade-in and out effects between chapters.
 */
 .chapter.hidden {
     opacity: 0;
@@ -28,7 +26,7 @@ h1, h2 {
 .chapter:not(.hidden) {
     opacity: 1;
     visibility: visible;
-    height: 100vh;
+    height: auto; /* CRITICAL: Allows content to be taller than the viewport */
     transition: opacity 1s ease-in-out, visibility 1s, height 1s linear;
 }
 
@@ -43,7 +41,7 @@ button,
     font-size: 1rem;
     cursor: pointer;
     border: 2px solid #2A6099; /* Blue Jay */
-    border-radius: 12px; /* Slightly rounder for cute look */
+    border-radius: 12px;
     background-color: #fff;
     color: #2A6099;
     font-weight: 600;
@@ -61,7 +59,7 @@ button:hover,
 .return-home:hover {
     background-color: #2A6099;
     color: #fff;
-    transform: translateY(-3px); /* little lift */
+    transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(42, 96, 153, 0.4);
 }
 
@@ -72,7 +70,7 @@ button:active,
 .next-chapter:active,
 .prev-chapter:active,
 .return-home:active {
-    transform: translateY(1px); /* simulate pressing down */
+    transform: translateY(1px);
     box-shadow: 0 3px 6px rgba(42, 96, 153, 0.3);
 }
 

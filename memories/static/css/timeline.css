@@ -116,6 +116,8 @@
   flex-direction: column;
   justify-content: flex-start;
   transition: transform 0.3s ease-in-out;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .collage-item:hover {
@@ -128,6 +130,7 @@
   border-radius: 6px;
   margin-bottom: 10px;
   display: block;
+  max-width: 100%;
 }
 
 /* --- Comment Below Each Image --- */
@@ -160,32 +163,55 @@
   transform: scale(1.1);
 }
 
-/* --- Mobile Responsive --- */
-@media (max-width: 600px) {
+/* --- Mobile Responsive Rules --- */
+
+/* Small Phones (e.g., iPhone SE) */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
   .collage {
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 12px;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
   }
-
+  .collage-item {
+    padding: 8px;
+  }
   .collage-item img {
-    max-height: 150px;
+    max-height: 200px;
+    object-fit: contain;
   }
+  .image-comment {
+    font-size: 0.75rem;
+  }
+  .whats-next-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
 
+/* Medium Devices (e.g., Tablets, larger phones including 2412x1080) */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .collage {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 15px;
+  }
   .image-comment {
     font-size: 0.8rem;
   }
-
-  .chapter2 .collage {
-    grid-template-columns: 1fr;
-  }
-
   .chapter3 .letter-content {
     padding: 20px;
     font-size: 1rem;
   }
+}
 
-  .whats-next-buttons {
-    flex-direction: column;
+/* Desktops and Laptops */
+@media (min-width: 1025px) {
+  .collage {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -216,11 +242,11 @@
 
 /* Class to animate items sequentially */
 .collage-item.animate-sequential {
-  animation: fadeInUp 1.8s ease forwards; /* Increased to 1.8 seconds */
+  animation: fadeInUp 1.8s ease forwards;
 }
 
 .collage-item.animate-sequential .image-comment {
-  animation: fadeInUp 1.2s ease 1.5s forwards; /* Comment appears 1.5s after image, animation takes 1.2s */
+  animation: fadeInUp 1.2s ease 1.5s forwards;
 }
 
 /* Add a smooth background color transition between pages */
@@ -281,12 +307,12 @@
 /* Make Give-Up and Final Page text more visible */
 #give-up-page h2,
 #give-up-page p {
-  color: #ffe6f0; /* bright pinkish for contrast */
+  color: #ffe6f0;
 }
 
 #final-page h2,
 #final-page p {
-  color: #ffffff; /* pure white for high contrast */
+  color: #ffffff;
 }
 
 .welcome-image {
