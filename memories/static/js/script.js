@@ -4,6 +4,21 @@ document.addEventListener("DOMContentLoaded", function () {
     ".page:not(#welcome-page):not(#end-of-chapter1)",
   );
   const endOfChapter1 = document.getElementById("end-of-chapter1");
+  const audioElement = document.getElementById("chapter-audio");
+
+  // Function to play chapter music
+  function playChapterMusic(chapter) {
+    if (chapterMusic[chapter] && chapterMusic[chapter] !== "") {
+      audioElement.src = chapterMusic[chapter];
+      audioElement.play().catch((error) => {
+        console.log("Audio play failed:", error);
+        // Autoplay might be blocked by browser policy
+      });
+    }
+  }
+
+  // Set initial volume (50%)
+  audioElement.volume = 0.5;
 
   // Hide all pages except the welcome page initially
   document.querySelectorAll(".page").forEach((page) => {
@@ -11,6 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
       page.classList.remove("active");
     }
   });
+
+  // Play welcome music if available
+  if (chapterMusic.chapter1) {
+    playChapterMusic("chapter1");
+  }
 
   // Function to animate collage items sequentially with much slower timing
   function animateCollageItemsSequentially(page) {
@@ -25,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     collageItems.forEach((item, index) => {
       setTimeout(() => {
         item.classList.add("animate-sequential");
-      }, index * 3500); // Increased to 3500ms (3.5 seconds) between each image+comment pair
+      }, index * 3500);
     });
   }
 
@@ -37,6 +57,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Function to determine chapter from page element
+  function getChapterFromPage(page) {
+    if (page.classList.contains("chapter1")) return "chapter1";
+    if (page.classList.contains("chapter2")) return "chapter2";
+    if (page.classList.contains("chapter3")) return "chapter3";
+    if (page.classList.contains("chapter-post-3")) return "post-chapter3";
+    return null;
+  }
+
   // Start Journey button
   document
     .getElementById("start-journey-button")
@@ -44,10 +73,12 @@ document.addEventListener("DOMContentLoaded", function () {
       welcomePage.classList.remove("active");
       if (dynamicallyRenderedPages.length > 0) {
         dynamicallyRenderedPages[0].classList.add("active");
+        // Play music for the first memory page
+        playChapterMusic("chapter1");
         // Animate the first page's collage items sequentially with a longer delay
         setTimeout(() => {
           animateCollageItemsSequentially(dynamicallyRenderedPages[0]);
-        }, 800); // Increased to 800ms
+        }, 800);
       } else {
         endOfChapter1.classList.add("active");
       }
@@ -69,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
             animateCollageItemsSequentially(
               dynamicallyRenderedPages[index + 1],
             );
-          }, 800); // Increased to 800ms
+          }, 800);
         } else {
           endOfChapter1.classList.add("active");
         }
@@ -87,9 +118,10 @@ document.addEventListener("DOMContentLoaded", function () {
             animateCollageItemsSequentially(
               dynamicallyRenderedPages[index - 1],
             );
-          }, 800); // Increased to 800ms
+          }, 800);
         } else {
           welcomePage.classList.add("active");
+          playChapterMusic("chapter1");
         }
       });
     }
@@ -103,13 +135,18 @@ document.addEventListener("DOMContentLoaded", function () {
       const currentPage = button.closest(".page");
 
       if (targetChapter && currentPage) {
+        const chapter = getChapterFromPage(targetChapter);
+        if (chapter) {
+          playChapterMusic(chapter);
+        }
+
         currentPage.classList.remove("active");
         targetChapter.classList.add("active");
 
         // Animate collage items in the target chapter sequentially
         setTimeout(() => {
           animateCollageItemsSequentially(targetChapter);
-        }, 800); // Increased to 800ms
+        }, 800);
       }
     });
   });
@@ -122,13 +159,18 @@ document.addEventListener("DOMContentLoaded", function () {
       const currentPage = button.closest(".page");
 
       if (targetChapter && currentPage) {
+        const chapter = getChapterFromPage(targetChapter);
+        if (chapter) {
+          playChapterMusic(chapter);
+        }
+
         currentPage.classList.remove("active");
         targetChapter.classList.add("active");
 
         // If going back to a page with collage items, animate them sequentially
         setTimeout(() => {
           animateCollageItemsSequentially(targetChapter);
-        }, 800); // Increased to 800ms
+        }, 800);
       }
     });
   });
@@ -141,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
         page.classList.remove("active");
       });
       welcomePage.classList.add("active");
+      playChapterMusic("chapter1");
     });
   });
 
@@ -156,9 +199,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (choice === "continue") {
         document.getElementById("final-page").classList.add("active");
+        playChapterMusic("post-chapter3");
       } else if (choice === "break") {
         document.getElementById("final-page").classList.add("active");
+        playChapterMusic("post-chapter3");
       }
     });
   });
+
+  // Try to play audio automatically (some browsers block this)
+  setTimeout(() => {
+    if (audioElement.src && audioElement.paused) {
+      audioElement.play().catch((error) => {
+        console.log("Autoplay blocked by browser policy");
+      });
+    }
+  }, 1000);
 });
