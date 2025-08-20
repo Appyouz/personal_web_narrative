@@ -25,13 +25,15 @@
 
     <!-- Welcome Page -->
     <div id="welcome-page" class="page chapter chapter1 active">
-      <h1>Welcome to our Journey</h1>
-      <p>A collection of our best memories, just for you.</p>
+      <img src="{% static 'images/bread.png' %}" alt="Welcome Image" class="welcome-image">
+      <h1>{{ secret_texts.welcome_title }}</h1>
+      <p>{{ secret_texts.welcome_subtitle }}</p>
       <button id="start-journey-button">Start the Journey</button>
     </div>
 
     {% for memory in memories %}
-    <div class="page chapter chapter1 " data-page-id="{{ forloop.counter }}">
+    <div class="page chapter chapter1" data-page-id="{{ forloop.counter }}" {% if forloop.last %}id="last-memory-page"
+      {% endif %}>
       <h2>{{ memory.title }}</h2>
       <p>{{ memory.description }}</p>
       <div class="collage">
@@ -52,16 +54,16 @@
     {% endfor %}
 
     <!-- End of Chapter 1 -->
-    <div id="end-of-chapter1" class="page chapter chapter1 ">
+    <div id="end-of-chapter1" class="page chapter chapter1">
       <h2>And that's just the beginning...</h2>
       <p>...click below to continue our journey.</p>
       <button class="next-chapter" data-target="chapter2-page">Go to Chapter 2</button>
     </div>
 
     <!-- Chapter 2 -->
-    <div id="chapter2-page" class="page chapter chapter2 ">
+    <div id="chapter2-page" class="page chapter chapter2">
       <h2>My Appreciation to You</h2>
-      <p>This section is all about the little things I love about you.</p>
+      <p>{{ secret_texts.chapter2_intro }}</p>
       <div class="collage">
         {% for image in appreciation_images %}
         <div class="collage-item">
@@ -74,26 +76,31 @@
       </div>
       <div class="navigation-buttons">
         <button class="prev-chapter" data-target="end-of-chapter1">Prev Chapter</button>
-        <button class="next-chapter" data-target="chapter3-page">Next Chapter</button>
+        <button class="next-chapter" data-target="end-of-chapter2">Next Chapter</button>
       </div>
     </div>
 
+    <!-- End of Chapter 2 -->
+    <div id="end-of-chapter2" class="page chapter chapter2">
+      <h2>My Heart is Full</h2>
+      <p>{{ secret_texts.end_chapter2 }}</p>
+      <button class="next-chapter" data-target="chapter3-page">Continue to My Letter</button>
+    </div>
+
     <!-- Chapter 3 -->
-    <div id="chapter3-page" class="page chapter chapter3 ">
-      <h2>A Letter for You</h2>
+    <div id="chapter3-page" class="page chapter chapter3">
+      <h2>{{ secret_texts.chapter3_title }}</h2>
       <div class="letter-content">
-        <p>My dearest...</p>
-        <p>This is where your personal letter will go. You can write your heartfelt message here, surrounded by the
-          beautiful design.</p>
+        <p>{{ secret_texts.chapter3_letter }}</p>
       </div>
       <div class="navigation-buttons">
-        <button class="prev-chapter" data-target="chapter2-page">Prev Chapter</button>
+        <button class="prev-chapter" data-target="end-of-chapter2">Prev Chapter</button>
         <button class="next-chapter" data-target="whats-next-page">Next Chapter</button>
       </div>
     </div>
 
-    <!-- Whats Next -->
-    <div id="whats-next-page" class="page chapter chapter-post-3 ">
+    <!-- Whats Next Page -->
+    <div id="whats-next-page" class="page chapter chapter-post-3">
       <h2>What's next? Hmmmm...</h2>
       <p>Choose your path:</p>
       <div class="whats-next-buttons">
@@ -102,15 +109,30 @@
       </div>
     </div>
 
+    <!-- Give Up Page -->
+    <div id="give-up-page" class="page chapter chapter-post-3">
+      <h2>{{ secret_texts.give_up_title }}</h2>
+      <p>{{ secret_texts.give_up_subtitle }}</p>
+      <button class="next-chapter" data-target="choice-page">Fine, you do you</button>
+    </div>
+
+    <!-- Choice Page -->
+    <div id="choice-page" class="page chapter chapter-post-3">
+      <h2>{{ secret_texts.choice_title }}</h2>
+      <p>{{ secret_texts.choice_subtitle }}</p>
+      <button class="next-chapter" data-target="final-page">Continue Anyway</button>
+    </div>
+
     <!-- Final Page -->
-    <div id="final-page" class="page chapter chapter-post-3 ">
-      <h2>The Journey Continues</h2>
-      <p>Let's stay strong! Our journey is still going.</p>
+    <div id="final-page" class="page chapter chapter-post-3">
+      <h2>{{ secret_texts.final_title }}</h2>
+      <p>{{ secret_texts.final_subtitle }}</p>
       <div class="navigation-buttons">
         <button class="prev-chapter" data-target="chapter3-page">Back to Letter</button>
         <button class="return-home">Start Over</button>
       </div>
     </div>
+
   </main>
 
   <script src="{% static 'js/script.js' %}"></script>
