@@ -31,7 +31,9 @@
     </div>
 
     {% for memory in memories %}
-    <div class="page chapter chapter1 " data-page-id="{{ forloop.counter }}">
+    <!-- <div class="page chapter chapter1 " data-page-id="{{ forloop.counter }}"> -->
+    <div class="page chapter chapter1" data-page-id="{{ forloop.counter }}" {% if forloop.last %}id="last-memory-page"
+      {% endif %}>
       <h2>{{ memory.title }}</h2>
       <p>{{ memory.description }}</p>
       <div class="collage">
@@ -55,7 +57,9 @@
     <div id="end-of-chapter1" class="page chapter chapter1 ">
       <h2>And that's just the beginning...</h2>
       <p>...click below to continue our journey.</p>
-      <button class="next-chapter" data-target="chapter2-page">Go to Chapter 2</button>
+
+      <button class="next-chapter">Go to Chapter 2</button>
+      <!-- <button class="next-chapter" data-target="chapter2-page">Go to Chapter 2</button> -->
     </div>
 
     <!-- Chapter 2 -->
@@ -73,7 +77,7 @@
         {% endfor %}
       </div>
       <div class="navigation-buttons">
-        <button class="prev-chapter" data-target="end-of-chapter1">Prev Chapter</button>
+        <button class="prev-chapter" data-target="last-memory-page">Prev Chapter</button>
         <button class="next-chapter" data-target="chapter3-page">Next Chapter</button>
       </div>
     </div>
