@@ -180,3 +180,11 @@ if SUPERUSER_AUTO_CREATE:
         logger.error(f"Error creating superuser: {e}")
 else:
     logger.info("Superuser auto-creation is disabled")
+
+
+# Additional security settings
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
