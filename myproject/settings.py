@@ -14,6 +14,11 @@ import os
 import environ
 import dotenv
 from pathlib import Path
+import logging
+from django.contrib.auth.models import User
+
+
+logger = logging.getLogger(__name__)
 
 env = environ.Env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -145,3 +150,33 @@ CLOUDINARY_URL = env('CLOUDINARY_URL', default=None)
 if CLOUDINARY_URL:
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
     print("DEBUG: Using production settings.")
+
+
+
+
+# Only create superuser in production if explicitly enabled
+SUPERUSER_AUTO_CREATE = os.environ.get('SUPERUSER_AUTO_CREATE', 'false').lower() == 'true'
+
+if SUPERUSER_AUTO_CREATE:
+    try:
+        # Check if superuser already exists
+        if not User.objects.filter(is_superuser=True).exists():
+            username = os.environ.get('SUPERUSER_USERNAME')
+            email = os.environ.get('SUPERUSER_EMAIL')
+            password = os.environ.get('SUPERUSER_PASSWORD')
+            
+            # Validate all required environment variables are set
+            if not all([username, email, password]):
+                logger.warning("Superuser auto-creation skipped: Missing environment variables")
+            else:
+                # Create superuser
+                User.objects.create_superuser(username, email, password)
+                logger.info(f"Superuser '{username}' created successfully")
+                # Immediately disable auto-creation for security
+                os.environ['SUPERUSER_AUTO_CREATE'] = 'false'
+        else:
+            logger.info("Superuser already exists")
+    except Exception as e:
+        logger.error(f"Error creating superuser: {e}")
+else:
+    logger.info("Superuser auto-creation is disabled")
