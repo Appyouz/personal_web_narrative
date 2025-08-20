@@ -1,164 +1,210 @@
 document.addEventListener("DOMContentLoaded", function () {
   const welcomePage = document.getElementById("welcome-page");
   const dynamicallyRenderedPages = document.querySelectorAll(
-    ".page:not(#welcome-page):not(#end-of-chapter1)",
+    ".page:not(#welcome-page):not(#final-page)",
   );
-  const endOfChapter1 = document.getElementById("end-of-chapter1");
+  const audioElement = document.getElementById("chapter-audio");
 
-  // Hide all pages except the welcome page initially
-  document.querySelectorAll(".page").forEach((page) => {
-    if (page !== welcomePage) {
-      page.classList.remove("active");
+  audioElement.volume = 0.5;
+  let currentChapter = "chapter1";
+
+  function playChapterMusic(chapter) {
+    if (chapterMusic[chapter] && chapterMusic[chapter] !== "") {
+      if (audioElement.src !== chapterMusic[chapter]) {
+        audioElement.src = chapterMusic[chapter];
+      }
+      currentChapter = chapter;
+      audioElement.play().catch(() => {
+        setTimeout(() => audioElement.play().catch(() => {}), 500);
+      });
+    } else {
+      audioElement.pause();
     }
-  });
+  }
 
-  // Function to animate collage items sequentially with much slower timing
+  // Hide all pages except welcome
+  document
+    .querySelectorAll(".page")
+    .forEach((p) => p.classList.remove("active"));
+  welcomePage.classList.add("active");
+
+  setTimeout(() => playChapterMusic("chapter1"), 500);
+
   function animateCollageItemsSequentially(page) {
-    const collageItems = page.querySelectorAll(".collage-item");
-
-    // Reset all items first
-    collageItems.forEach((item) => {
-      item.classList.remove("animate-sequential");
-    });
-
-    // Animate items one by one with a much longer delay (3500ms between each pair)
-    collageItems.forEach((item, index) => {
-      setTimeout(() => {
-        item.classList.add("animate-sequential");
-      }, index * 3500); // Increased to 3500ms (3.5 seconds) between each image+comment pair
-    });
+    const items = page.querySelectorAll(".collage-item");
+    items.forEach((i) => i.classList.remove("animate-sequential"));
+    items.forEach((item, idx) =>
+      setTimeout(() => item.classList.add("animate-sequential"), idx * 3500),
+    );
   }
 
-  // Function to reset collage animations
   function resetCollageAnimations(page) {
-    const collageItems = page.querySelectorAll(".collage-item");
-    collageItems.forEach((item) => {
-      item.classList.remove("animate-sequential");
-    });
+    page
+      .querySelectorAll(".collage-item")
+      .forEach((i) => i.classList.remove("animate-sequential"));
   }
 
-  // Start Journey button
+  // Start Journey
   document
     .getElementById("start-journey-button")
     .addEventListener("click", () => {
       welcomePage.classList.remove("active");
       if (dynamicallyRenderedPages.length > 0) {
         dynamicallyRenderedPages[0].classList.add("active");
-        // Animate the first page's collage items sequentially with a longer delay
-        setTimeout(() => {
-          animateCollageItemsSequentially(dynamicallyRenderedPages[0]);
-        }, 800); // Increased to 800ms
+        playChapterMusic("chapter1");
+        setTimeout(
+          () => animateCollageItemsSequentially(dynamicallyRenderedPages[0]),
+          800,
+        );
+      }
+    });
+
+  // Memory Pages Navigation
+  dynamicallyRenderedPages.forEach((page, idx) => {
+    const nextBtn = page.querySelector(".next-page");
+    const prevBtn = page.querySelector(".prev-page");
+
+    nextBtn?.addEventListener("click", () => {
+      resetCollageAnimations(page);
+      page.classList.remove("active");
+      if (idx < dynamicallyRenderedPages.length - 1) {
+        dynamicallyRenderedPages[idx + 1].classList.add("active");
+        playChapterMusic("chapter1");
+        setTimeout(
+          () =>
+            animateCollageItemsSequentially(dynamicallyRenderedPages[idx + 1]),
+          800,
+        );
       } else {
-        endOfChapter1.classList.add("active");
+        const endChapter1 = document.getElementById("end-of-chapter1");
+        endChapter1.classList.add("active");
+        playChapterMusic("chapter1");
       }
     });
 
-  // Next / Prev buttons for chapter 1 memories
-  dynamicallyRenderedPages.forEach((page, index) => {
-    const nextButton = page.querySelector(".next-page");
-    const prevButton = page.querySelector(".prev-page");
+    prevBtn?.addEventListener("click", () => {
+      resetCollageAnimations(page);
+      page.classList.remove("active");
+      if (idx > 0) {
+        dynamicallyRenderedPages[idx - 1].classList.add("active");
+        playChapterMusic("chapter1");
+        setTimeout(
+          () =>
+            animateCollageItemsSequentially(dynamicallyRenderedPages[idx - 1]),
+          800,
+        );
+      } else {
+        welcomePage.classList.add("active");
+        playChapterMusic("chapter1");
+      }
+    });
+  });
 
-    if (nextButton) {
-      nextButton.addEventListener("click", () => {
-        resetCollageAnimations(page);
-        page.classList.remove("active");
-        if (index < dynamicallyRenderedPages.length - 1) {
-          dynamicallyRenderedPages[index + 1].classList.add("active");
-          // Animate the next page's collage items sequentially
-          setTimeout(() => {
-            animateCollageItemsSequentially(
-              dynamicallyRenderedPages[index + 1],
-            );
-          }, 800); // Increased to 800ms
-        } else {
-          endOfChapter1.classList.add("active");
-        }
-      });
+  // Helper: get chapter from page id
+  function getChapterFromPage(page) {
+    const id = page.id;
+    if (id === "chapter2-page" || id === "end-of-chapter2") return "chapter2";
+    if (id === "chapter3-page") return "chapter3";
+    if (
+      ["whats-next-page", "give-up-page", "choice-page", "final-page"].includes(
+        id,
+      )
+    )
+      return "post-chapter3";
+    return "chapter1";
+  }
+
+  // Delegate next/prev chapter buttons
+  document.addEventListener("click", function (e) {
+    const currentPage = e.target.closest(".page");
+    if (!currentPage) return;
+
+    // Next-chapter
+    if (e.target.classList.contains("next-chapter")) {
+      e.preventDefault();
+      const targetId = e.target.dataset.target;
+      const targetPage = document.getElementById(targetId);
+      if (!targetPage) return;
+
+      currentPage.classList.remove("active");
+      targetPage.classList.add("active");
+
+      // Animate collage items if present
+      setTimeout(() => animateCollageItemsSequentially(targetPage), 800);
+
+      // Play music according to target page
+      const chapter = getChapterFromPage(targetPage);
+      if (targetId === "give-up-page") {
+        audioElement.pause(); // stop music on give-up
+      } else {
+        playChapterMusic(chapter);
+      }
     }
 
-    if (prevButton) {
-      prevButton.addEventListener("click", () => {
-        resetCollageAnimations(page);
-        page.classList.remove("active");
-        if (index > 0) {
-          dynamicallyRenderedPages[index - 1].classList.add("active");
-          // Animate the previous page's collage items sequentially
-          setTimeout(() => {
-            animateCollageItemsSequentially(
-              dynamicallyRenderedPages[index - 1],
-            );
-          }, 800); // Increased to 800ms
-        } else {
-          welcomePage.classList.add("active");
-        }
-      });
+    // Prev-chapter
+    if (e.target.classList.contains("prev-chapter")) {
+      e.preventDefault();
+      const targetId = e.target.dataset.target;
+      const targetPage = document.getElementById(targetId);
+      if (!targetPage) return;
+
+      currentPage.classList.remove("active");
+      targetPage.classList.add("active");
+
+      setTimeout(() => animateCollageItemsSequentially(targetPage), 800);
+      playChapterMusic(getChapterFromPage(targetPage));
     }
   });
 
-  // Next Chapter buttons
-  document.querySelectorAll(".next-chapter").forEach((button) => {
-    button.addEventListener("click", () => {
-      const targetId = button.dataset.target;
-      const targetChapter = document.getElementById(targetId);
-      const currentPage = button.closest(".page");
-
-      if (targetChapter && currentPage) {
-        currentPage.classList.remove("active");
-        targetChapter.classList.add("active");
-
-        // Animate collage items in the target chapter sequentially
-        setTimeout(() => {
-          animateCollageItemsSequentially(targetChapter);
-        }, 800); // Increased to 800ms
-      }
-    });
-  });
-
-  // Prev Chapter buttons
-  document.querySelectorAll(".prev-chapter").forEach((button) => {
-    button.addEventListener("click", () => {
-      const targetId = button.dataset.target;
-      const targetChapter = document.getElementById(targetId);
-      const currentPage = button.closest(".page");
-
-      if (targetChapter && currentPage) {
-        currentPage.classList.remove("active");
-        targetChapter.classList.add("active");
-
-        // If going back to a page with collage items, animate them sequentially
-        setTimeout(() => {
-          animateCollageItemsSequentially(targetChapter);
-        }, 800); // Increased to 800ms
-      }
-    });
-  });
-
-  // Return Home buttons
-  document.querySelectorAll(".return-home").forEach((button) => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".page.active").forEach((page) => {
-        resetCollageAnimations(page);
-        page.classList.remove("active");
-      });
-      welcomePage.classList.add("active");
-    });
-  });
-
-  // What's Next buttons
+  // Whats Next buttons
   document.querySelectorAll(".whats-next-btn").forEach((button) => {
     button.addEventListener("click", () => {
       const choice = button.dataset.choice;
       const currentPage = button.closest(".page");
-
-      if (currentPage) {
-        currentPage.classList.remove("active");
-      }
+      currentPage.classList.remove("active");
 
       if (choice === "continue") {
         document.getElementById("final-page").classList.add("active");
+        playChapterMusic("post-chapter3");
       } else if (choice === "break") {
-        document.getElementById("final-page").classList.add("active");
+        document.getElementById("give-up-page").classList.add("active");
+        audioElement.pause();
       }
     });
   });
+
+  // Final Page buttons
+  document.querySelectorAll(".return-home").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document
+        .querySelectorAll(".page.active")
+        .forEach((p) => p.classList.remove("active"));
+      welcomePage.classList.add("active");
+      playChapterMusic("chapter1");
+    });
+  });
+
+  // Optional: Manual start button for browsers blocking autoplay
+  const startMusicBtn = document.createElement("button");
+  startMusicBtn.textContent = "Start Music";
+  startMusicBtn.style.position = "fixed";
+  startMusicBtn.style.bottom = "20px";
+  startMusicBtn.style.right = "20px";
+  startMusicBtn.style.zIndex = "1000";
+  startMusicBtn.style.padding = "10px";
+  startMusicBtn.style.backgroundColor = "rgba(0,0,0,0.7)";
+  startMusicBtn.style.color = "white";
+  startMusicBtn.style.border = "none";
+  startMusicBtn.style.borderRadius = "5px";
+  startMusicBtn.style.display = "none";
+
+  startMusicBtn.addEventListener("click", () => {
+    playChapterMusic(currentChapter);
+    startMusicBtn.style.display = "none";
+  });
+
+  document.body.appendChild(startMusicBtn);
+  setTimeout(() => {
+    if (audioElement.paused) startMusicBtn.style.display = "block";
+  }, 2000);
 });
