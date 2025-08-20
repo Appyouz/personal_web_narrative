@@ -188,3 +188,53 @@
     flex-direction: column;
   }
 }
+
+/* Animation for sequential image reveal - Much slower version */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Initially hide all collage items and comments */
+.collage-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: none;
+}
+
+.image-comment {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: none;
+}
+
+/* Class to animate items sequentially */
+.collage-item.animate-sequential {
+  animation: fadeInUp 1.8s ease forwards; /* Increased to 1.8 seconds */
+}
+
+.collage-item.animate-sequential .image-comment {
+  animation: fadeInUp 1.2s ease 1.5s forwards; /* Comment appears 1.5s after image, animation takes 1.2s */
+}
+
+/* Add a smooth background color transition between pages */
+.chapter1, .chapter2, .chapter3, .chapter-post-3 {
+  transition: background-color 1.5s ease-in-out;
+}
+
+/* Optional: Add a very subtle pulse to the current image */
+.collage-item.animate-sequential {
+  animation: fadeInUp 1.8s ease forwards;
+  box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+}
+
+.collage-item.animate-sequential:hover {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  transition: box-shadow 0.5s ease;
+}

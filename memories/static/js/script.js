@@ -12,6 +12,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Function to animate collage items sequentially with much slower timing
+  function animateCollageItemsSequentially(page) {
+    const collageItems = page.querySelectorAll(".collage-item");
+
+    // Reset all items first
+    collageItems.forEach((item) => {
+      item.classList.remove("animate-sequential");
+    });
+
+    // Animate items one by one with a much longer delay (3500ms between each pair)
+    collageItems.forEach((item, index) => {
+      setTimeout(() => {
+        item.classList.add("animate-sequential");
+      }, index * 3500); // Increased to 3500ms (3.5 seconds) between each image+comment pair
+    });
+  }
+
+  // Function to reset collage animations
+  function resetCollageAnimations(page) {
+    const collageItems = page.querySelectorAll(".collage-item");
+    collageItems.forEach((item) => {
+      item.classList.remove("animate-sequential");
+    });
+  }
+
   // Start Journey button
   document
     .getElementById("start-journey-button")
@@ -19,6 +44,10 @@ document.addEventListener("DOMContentLoaded", function () {
       welcomePage.classList.remove("active");
       if (dynamicallyRenderedPages.length > 0) {
         dynamicallyRenderedPages[0].classList.add("active");
+        // Animate the first page's collage items sequentially with a longer delay
+        setTimeout(() => {
+          animateCollageItemsSequentially(dynamicallyRenderedPages[0]);
+        }, 800); // Increased to 800ms
       } else {
         endOfChapter1.classList.add("active");
       }
@@ -31,9 +60,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (nextButton) {
       nextButton.addEventListener("click", () => {
+        resetCollageAnimations(page);
         page.classList.remove("active");
         if (index < dynamicallyRenderedPages.length - 1) {
           dynamicallyRenderedPages[index + 1].classList.add("active");
+          // Animate the next page's collage items sequentially
+          setTimeout(() => {
+            animateCollageItemsSequentially(
+              dynamicallyRenderedPages[index + 1],
+            );
+          }, 800); // Increased to 800ms
         } else {
           endOfChapter1.classList.add("active");
         }
@@ -42,9 +78,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (prevButton) {
       prevButton.addEventListener("click", () => {
+        resetCollageAnimations(page);
         page.classList.remove("active");
         if (index > 0) {
           dynamicallyRenderedPages[index - 1].classList.add("active");
+          // Animate the previous page's collage items sequentially
+          setTimeout(() => {
+            animateCollageItemsSequentially(
+              dynamicallyRenderedPages[index - 1],
+            );
+          }, 800); // Increased to 800ms
         } else {
           welcomePage.classList.add("active");
         }
@@ -62,6 +105,11 @@ document.addEventListener("DOMContentLoaded", function () {
       if (targetChapter && currentPage) {
         currentPage.classList.remove("active");
         targetChapter.classList.add("active");
+
+        // Animate collage items in the target chapter sequentially
+        setTimeout(() => {
+          animateCollageItemsSequentially(targetChapter);
+        }, 800); // Increased to 800ms
       }
     });
   });
@@ -76,6 +124,11 @@ document.addEventListener("DOMContentLoaded", function () {
       if (targetChapter && currentPage) {
         currentPage.classList.remove("active");
         targetChapter.classList.add("active");
+
+        // If going back to a page with collage items, animate them sequentially
+        setTimeout(() => {
+          animateCollageItemsSequentially(targetChapter);
+        }, 800); // Increased to 800ms
       }
     });
   });
@@ -84,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".return-home").forEach((button) => {
     button.addEventListener("click", () => {
       document.querySelectorAll(".page.active").forEach((page) => {
+        resetCollageAnimations(page);
         page.classList.remove("active");
       });
       welcomePage.classList.add("active");
@@ -103,7 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (choice === "continue") {
         document.getElementById("final-page").classList.add("active");
       } else if (choice === "break") {
-        // Handle break option if needed
         document.getElementById("final-page").classList.add("active");
       }
     });
