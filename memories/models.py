@@ -43,3 +43,12 @@ class ChapterMusic(models.Model):
 
     def __str__(self):
         return f"{self.get_chapter_display()}"
+
+
+
+class SecretText(models.Model):
+    key = models.CharField(max_length=50, unique=True)  # identifier for each text
+    content = models.TextField()
+
+    def __str__(self):
+        return self.key

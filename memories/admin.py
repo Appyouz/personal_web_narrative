@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Memory, MemoryImage, AppreciationImage, ChapterMusic
+from .models import Memory, MemoryImage, AppreciationImage, ChapterMusic, SecretText
 
 class MemoryImageInline(admin.StackedInline):
     model = MemoryImage
@@ -11,3 +11,4 @@ class MemoryAdmin(admin.ModelAdmin):
 admin.site.register(Memory, MemoryAdmin)
 admin.site.register(AppreciationImage)
 admin.site.register(ChapterMusic)
+admin.site.register(SecretText)

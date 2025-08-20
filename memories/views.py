@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import AppreciationImage, Memory, ChapterMusic
+from .models import AppreciationImage, Memory, ChapterMusic, SecretText
 
 class TimelineView(LoginRequiredMixin, TemplateView):
     template_name = 'memories/timeline.html'
@@ -18,5 +18,9 @@ class TimelineView(LoginRequiredMixin, TemplateView):
         for music in ChapterMusic.objects.all():
             chapter_music[music.chapter] = music.music_file.url
         context['chapter_music'] = chapter_music
+
+        # Fetch all secret texts as a dictionary
+        secret_texts = SecretText.objects.all()
+        context['secret_texts'] = {t.key: t.content for t in secret_texts}
 
         return context
