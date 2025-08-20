@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic', # New: For static file serving
+    'django_extensions',
 
     'memories.apps.MemoriesConfig',
     'cloudinary_storage', # New: for Cloudinary
