@@ -1,0 +1,45 @@
+/* --- Chapter 2 Colors --- */
+#chapter2 {
+    background-color: #2A6099; /* Blue Jay */
+    color: #40E0D0; /* Turquoise */
+}
+
+/* --- Chapter 2 Collage Layout --- */
+#chapter2 .collage {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: minmax(100px, auto);
+    grid-gap: 20px;
+    width: 90%;
+    max-width: 1000px;
+}
+
+#chapter2 .collage-item {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+#chapter2 .collage-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+#chapter2 .collage-item:hover {
+    transform: scale(1.05);
+}
+
+/* --- Responsive styles for chapter 2 --- */
+@media (max-width: 600px) {
+    #chapter2 .collage {
+        grid-template-columns: 1fr;
+    }
+}

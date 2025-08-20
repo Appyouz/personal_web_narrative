@@ -1,0 +1,113 @@
+
+/* --- Base Colors & Typography --- */
+body {
+    background-color: #E6E6FA; /* Soft Lilac */
+    color: #4B0082; /* Deep Berry */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Page Layout --- */
+.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    transition: opacity 1s ease-in-out;
+}
+
+.page.hidden {
+    display: none;
+    opacity: 0;
+}
+
+/* --- Buttons --- */
+#next-button, 
+.next-page {
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 2px solid #2A6099; /* Blue Jay */
+    border-radius: 8px;
+    background-color: #fff;
+    color: #2A6099;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+#next-button:hover, 
+.next-page:hover {
+    background-color: #2A6099;
+    color: #fff;
+}
+
+/* --- Collage Layout --- */
+.collage {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-gap: 20px;
+    width: 95%;
+    max-width: 1000px;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+}
+
+/* --- Polaroid / Photo Frame Style --- */
+.collage-item {
+    background: #fff;
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: transform 0.3s ease-in-out;
+}
+
+.collage-item:hover {
+    transform: translateY(-5px);
+}
+
+.collage-item img {
+    width: 100%;
+    height: auto;         /* keeps natural aspect ratio */
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* --- Comment Below Each Image --- */
+.image-comment {
+    font-size: 0.85rem;
+    color: #4B0082; /* Deep Berry */
+    font-style: italic;
+    margin: 0;
+    padding: 5px;
+    word-wrap: break-word;
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 600px) {
+    .collage {
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 12px;
+    }
+
+    .collage-item img {
+        max-height: 150px;
+    }
+
+    .image-comment {
+        font-size: 0.8rem;
+    }
+}
+
+
