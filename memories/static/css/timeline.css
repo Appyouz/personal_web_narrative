@@ -238,3 +238,53 @@
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
   transition: box-shadow 0.5s ease;
 }
+
+/* Styles for the new pages */
+#give-up-page {
+  background-color: #6a0dad;
+  color: #ffb6c1;
+}
+
+#choice-page {
+  background-color: #9370db;
+  color: #fff;
+}
+
+#final-page {
+  background: linear-gradient(135deg, #6a0dad, #9370db);
+  color: #fff;
+}
+
+/* Style for the give-up page button */
+#give-up-page button {
+  background-color: #ffb6c1;
+  color: #6a0dad;
+  border: 2px solid #ff69b4;
+}
+
+#give-up-page button:hover {
+  background-color: #ff69b4;
+  color: #fff;
+}
+
+/* Style for the choice page button */
+#choice-page button {
+  background-color: #ffd700;
+  color: #6a0dad;
+  border: 2px solid #ffed4e;
+}
+
+#choice-page button:hover {
+  background-color: #ffed4e;
+  color: #6a0dad;
+}
+/* Make Give-Up and Final Page text more visible */
+#give-up-page h2,
+#give-up-page p {
+  color: #ffe6f0; /* bright pinkish for contrast */
+}
+
+#final-page h2,
+#final-page p {
+  color: #ffffff; /* pure white for high contrast */
+}

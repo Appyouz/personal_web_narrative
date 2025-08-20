@@ -1,15 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
   const welcomePage = document.getElementById("welcome-page");
   const dynamicallyRenderedPages = document.querySelectorAll(
-    ".page:not(#welcome-page):not(#end-of-chapter1):not(#chapter2-page):not(#chapter3-page):not(#whats-next-page):not(#final-page)",
+    ".page:not(#welcome-page):not(#final-page)",
   );
-  const endOfChapter1 = document.getElementById("end-of-chapter1");
-  const chapter2Page = document.getElementById("chapter2-page");
-  const chapter3Page = document.getElementById("chapter3-page");
-  const whatsNextPage = document.getElementById("whats-next-page");
-  const finalPage = document.getElementById("final-page");
   const audioElement = document.getElementById("chapter-audio");
 
+  audioElement.volume = 0.5;
   let currentChapter = "chapter1";
 
   function playChapterMusic(chapter) {
@@ -21,10 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
       audioElement.play().catch(() => {
         setTimeout(() => audioElement.play().catch(() => {}), 500);
       });
+    } else {
+      audioElement.pause();
     }
   }
-
-  audioElement.volume = 0.5;
 
   // Hide all pages except welcome
   document
@@ -60,8 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
           () => animateCollageItemsSequentially(dynamicallyRenderedPages[0]),
           800,
         );
-      } else {
-        endOfChapter1.classList.add("active");
       }
     });
 
@@ -82,7 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
           800,
         );
       } else {
-        endOfChapter1.classList.add("active");
+        const endChapter1 = document.getElementById("end-of-chapter1");
+        endChapter1.classList.add("active");
         playChapterMusic("chapter1");
       }
     });
@@ -105,65 +100,91 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // End of Chapter 1 → Chapter 2
-  endOfChapter1.querySelector(".next-chapter").addEventListener("click", () => {
-    endOfChapter1.classList.remove("active");
-    chapter2Page.classList.add("active");
-    playChapterMusic("chapter2");
-    setTimeout(() => animateCollageItemsSequentially(chapter2Page), 800);
+  // Helper: get chapter from page id
+  function getChapterFromPage(page) {
+    const id = page.id;
+    if (id === "chapter2-page" || id === "end-of-chapter2") return "chapter2";
+    if (id === "chapter3-page") return "chapter3";
+    if (
+      ["whats-next-page", "give-up-page", "choice-page", "final-page"].includes(
+        id,
+      )
+    )
+      return "post-chapter3";
+    return "chapter1";
+  }
+
+  // Delegate next/prev chapter buttons
+  document.addEventListener("click", function (e) {
+    const currentPage = e.target.closest(".page");
+    if (!currentPage) return;
+
+    // Next-chapter
+    if (e.target.classList.contains("next-chapter")) {
+      e.preventDefault();
+      const targetId = e.target.dataset.target;
+      const targetPage = document.getElementById(targetId);
+      if (!targetPage) return;
+
+      currentPage.classList.remove("active");
+      targetPage.classList.add("active");
+
+      // Animate collage items if present
+      setTimeout(() => animateCollageItemsSequentially(targetPage), 800);
+
+      // Play music according to target page
+      const chapter = getChapterFromPage(targetPage);
+      if (targetId === "give-up-page") {
+        audioElement.pause(); // stop music on give-up
+      } else {
+        playChapterMusic(chapter);
+      }
+    }
+
+    // Prev-chapter
+    if (e.target.classList.contains("prev-chapter")) {
+      e.preventDefault();
+      const targetId = e.target.dataset.target;
+      const targetPage = document.getElementById(targetId);
+      if (!targetPage) return;
+
+      currentPage.classList.remove("active");
+      targetPage.classList.add("active");
+
+      setTimeout(() => animateCollageItemsSequentially(targetPage), 800);
+      playChapterMusic(getChapterFromPage(targetPage));
+    }
   });
 
-  // Chapter 2 Navigation
-  chapter2Page.querySelector(".prev-chapter").addEventListener("click", () => {
-    chapter2Page.classList.remove("active");
-    endOfChapter1.classList.add("active");
-    playChapterMusic("chapter1");
-  });
+  // Whats Next buttons
+  document.querySelectorAll(".whats-next-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const choice = button.dataset.choice;
+      const currentPage = button.closest(".page");
+      currentPage.classList.remove("active");
 
-  chapter2Page.querySelector(".next-chapter").addEventListener("click", () => {
-    chapter2Page.classList.remove("active");
-    chapter3Page.classList.add("active");
-    playChapterMusic("chapter3");
-  });
-
-  // Chapter 3 Navigation
-  chapter3Page.querySelector(".prev-chapter").addEventListener("click", () => {
-    chapter3Page.classList.remove("active");
-    chapter2Page.classList.add("active");
-    playChapterMusic("chapter2");
-  });
-
-  chapter3Page.querySelector(".next-chapter").addEventListener("click", () => {
-    chapter3Page.classList.remove("active");
-    whatsNextPage.classList.add("active");
-    playChapterMusic("post-chapter3");
-  });
-
-  // Whats Next Buttons
-  whatsNextPage.querySelectorAll(".whats-next-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      whatsNextPage.classList.remove("active");
-      finalPage.classList.add("active");
-      playChapterMusic("post-chapter3");
+      if (choice === "continue") {
+        document.getElementById("final-page").classList.add("active");
+        playChapterMusic("post-chapter3");
+      } else if (choice === "break") {
+        document.getElementById("give-up-page").classList.add("active");
+        audioElement.pause();
+      }
     });
   });
 
-  // Final Page Buttons
-  finalPage.querySelector(".prev-chapter").addEventListener("click", () => {
-    finalPage.classList.remove("active");
-    chapter3Page.classList.add("active");
-    playChapterMusic("chapter3");
+  // Final Page buttons
+  document.querySelectorAll(".return-home").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document
+        .querySelectorAll(".page.active")
+        .forEach((p) => p.classList.remove("active"));
+      welcomePage.classList.add("active");
+      playChapterMusic("chapter1");
+    });
   });
 
-  finalPage.querySelector(".return-home").addEventListener("click", () => {
-    document
-      .querySelectorAll(".page.active")
-      .forEach((p) => p.classList.remove("active"));
-    welcomePage.classList.add("active");
-    playChapterMusic("chapter1");
-  });
-
-  // Manual start button for browsers blocking autoplay
+  // Optional: Manual start button for browsers blocking autoplay
   const startMusicBtn = document.createElement("button");
   startMusicBtn.textContent = "Start Music";
   startMusicBtn.style.position = "fixed";
@@ -183,7 +204,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.body.appendChild(startMusicBtn);
-
   setTimeout(() => {
     if (audioElement.paused) startMusicBtn.style.display = "block";
   }, 2000);
