@@ -21,9 +21,9 @@
 
 <body>
   <main id="timeline-container">
-
     <audio id="chapter-audio" autoplay loop></audio>
 
+    <!-- Welcome Page -->
     <div id="welcome-page" class="page chapter chapter1 active">
       <h1>Welcome to our Journey</h1>
       <p>A collection of our best memories, just for you.</p>
@@ -31,7 +31,7 @@
     </div>
 
     {% for memory in memories %}
-    <div class="page chapter chapter1 hidden" data-page-id="{{ forloop.counter }}">
+    <div class="page chapter chapter1 " data-page-id="{{ forloop.counter }}">
       <h2>{{ memory.title }}</h2>
       <p>{{ memory.description }}</p>
       <div class="collage">
@@ -51,13 +51,15 @@
     </div>
     {% endfor %}
 
-    <div id="end-of-chapter1" class="page chapter chapter1 hidden">
+    <!-- End of Chapter 1 -->
+    <div id="end-of-chapter1" class="page chapter chapter1 ">
       <h2>And that's just the beginning...</h2>
       <p>...click below to continue our journey.</p>
       <button class="next-chapter" data-target="chapter2-page">Go to Chapter 2</button>
     </div>
 
-    <div id="chapter2-page" class="page chapter chapter2 hidden">
+    <!-- Chapter 2 -->
+    <div id="chapter2-page" class="page chapter chapter2 ">
       <h2>My Appreciation to You</h2>
       <p>This section is all about the little things I love about you.</p>
       <div class="collage">
@@ -76,7 +78,8 @@
       </div>
     </div>
 
-    <div id="chapter3-page" class="page chapter chapter3 hidden">
+    <!-- Chapter 3 -->
+    <div id="chapter3-page" class="page chapter chapter3 ">
       <h2>A Letter for You</h2>
       <div class="letter-content">
         <p>My dearest...</p>
@@ -85,20 +88,31 @@
       </div>
       <div class="navigation-buttons">
         <button class="prev-chapter" data-target="chapter2-page">Prev Chapter</button>
-        <button class="next-chapter" data-target="post-chapter3-page">Next Chapter</button>
+        <button class="next-chapter" data-target="whats-next-page">Next Chapter</button>
       </div>
     </div>
 
-    <div id="post-chapter3-page" class="page chapter chapter-post-3 hidden">
+    <!-- Whats Next -->
+    <div id="whats-next-page" class="page chapter chapter-post-3 ">
       <h2>What's next? Hmmmm...</h2>
+      <p>Choose your path:</p>
+      <div class="whats-next-buttons">
+        <button class="whats-next-btn" data-choice="continue">Keep Going 🚀</button>
+        <button class="whats-next-btn" data-choice="break">Take a Break 😢</button>
+      </div>
+    </div>
+
+    <!-- Final Page -->
+    <div id="final-page" class="page chapter chapter-post-3 ">
+      <h2>The Journey Continues</h2>
       <p>Let's stay strong! Our journey is still going.</p>
       <div class="navigation-buttons">
-        <button class="prev-chapter" data-target="chapter3-page">Back to the Letter</button>
-        <button class="return-home">Back to Start</button>
+        <button class="prev-chapter" data-target="chapter3-page">Back to Letter</button>
+        <button class="return-home">Start Over</button>
       </div>
     </div>
-
   </main>
+
   <script src="{% static 'js/script.js' %}"></script>
 </body>
 

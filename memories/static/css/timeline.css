@@ -1,6 +1,6 @@
 /* --- Page Layout --- */
 .page {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -8,37 +8,30 @@
   padding: 20px;
   box-sizing: border-box;
   text-align: center;
-  transition: opacity 1s ease-in-out;
-}
-
-/* * This is the crucial change. Instead of using `display: none`
- * which breaks transitions, we use `opacity` and `visibility`
- * to create a fade effect while keeping the element in the DOM.
- */
-.hidden {
   opacity: 0;
-  visibility: hidden;
-  position: absolute; /* Hide from flow but keep transitions */
-  pointer-events: none; /* Disable clicking on the element */
+  transition: opacity 0.6s ease-in-out;
 }
 
-.active {
+.page.active {
+  display: flex;
   opacity: 1;
-  visibility: visible;
-  position: relative;
-  pointer-events: auto;
+}
+
+.hidden {
+  display: none !important;
+  opacity: 0;
 }
 
 /* --- Chapter 1 Colors & Layout --- */
 .chapter1 {
-  background-color: #E6E6FA; /* Soft Lilac */
-  color: #4B0082; /* Deep Berry */
+  background-color: #E6E6FA;
+  color: #4B0082;
 }
 
 /* --- Chapter 2 Colors & Layout --- */
 .chapter2 {
-  background-color: #2A6099; /* Blue Jay */
-  color: #40E0D0; /* Turquoise */
+  background-color: #2A6099;
+  color: #40E0D0;
 }
 
 .chapter2 .collage {
@@ -70,8 +63,8 @@
 
 /* --- Chapter 3 Colors & Layout --- */
 .chapter3 {
-  background-color: #E6E6FA; /* Soft Lilac */
-  color: #000000; /* Black */
+  background-color: #E6E6FA;
+  color: #000000;
   text-align: left;
 }
 
@@ -83,7 +76,7 @@
 }
 
 .chapter3 h2 {
-  color: #4B0082; /* Deep Berry */
+  color: #4B0082;
   margin-bottom: 40px;
 }
 
@@ -99,7 +92,7 @@
   white-space: pre-wrap;
 }
 
-/* --- Collage Layout (Chapter 1) --- */
+/* --- Collage Layout --- */
 .collage {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -140,11 +133,31 @@
 /* --- Comment Below Each Image --- */
 .image-comment {
   font-size: 0.85rem;
-  color: #4B0082; /* Deep Berry */
+  color: #4B0082;
   font-style: italic;
   margin: 0;
   padding: 5px;
   word-wrap: break-word;
+}
+
+/* --- Whats Next Buttons --- */
+.whats-next-buttons {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.whats-next-btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.whats-next-btn:hover {
+  transform: scale(1.1);
 }
 
 /* --- Mobile Responsive --- */
@@ -161,17 +174,17 @@
   .image-comment {
     font-size: 0.8rem;
   }
-}
 
-@media (max-width: 600px) {
   .chapter2 .collage {
     grid-template-columns: 1fr;
   }
-}
 
-@media (max-width: 600px) {
   .chapter3 .letter-content {
     padding: 20px;
     font-size: 1rem;
+  }
+
+  .whats-next-buttons {
+    flex-direction: column;
   }
 }

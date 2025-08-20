@@ -1,79 +1,111 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const allPages = document.querySelectorAll(".page");
-  let currentPageIndex = 0;
-
-  function showPage(index) {
-    // Hide all pages
-    allPages.forEach((page) => {
-      page.classList.add("hidden");
-      page.classList.remove("active");
-    });
-
-    // Show the new page at the given index
-    const currentPage = allPages[index];
-    if (currentPage) {
-      currentPage.classList.remove("hidden");
-      currentPage.classList.add("active");
-      playChapterMusic(currentPage);
-    }
-  }
-
-  function playChapterMusic(pageElement) {
-    const chapterClass = Array.from(pageElement.classList).find((cls) =>
-      cls.startsWith("chapter"),
-    );
-    if (chapterClass) {
-      const chapterId = chapterClass.split("-")[0];
-      const url = chapterMusic[chapterId];
-      if (url) {
-        audioElement.src = url;
-        audioElement.play().catch(() => {
-          console.log("Autoplay blocked, user interaction required to play.");
-        });
-      }
-    }
-  }
-
-  // Initial setup: Hide all pages except the welcome page
-  showPage(0);
-
-  // Get references to the navigation buttons after the initial setup
-  const startJourneyButton = document.getElementById("start-journey-button");
-  const navigationButtons = document.querySelectorAll(
-    ".next-page, .prev-page, .next-chapter, .prev-chapter, .return-home",
+  const welcomePage = document.getElementById("welcome-page");
+  const dynamicallyRenderedPages = document.querySelectorAll(
+    ".page:not(#welcome-page):not(#end-of-chapter1)",
   );
-  const audioElement = document.getElementById("chapter-audio");
+  const endOfChapter1 = document.getElementById("end-of-chapter1");
 
-  // Add event listeners to all navigation buttons
-  if (startJourneyButton) {
-    startJourneyButton.addEventListener("click", () => {
-      currentPageIndex = 1;
-      showPage(currentPageIndex);
-    });
-  }
+  // Hide all pages except the welcome page initially
+  document.querySelectorAll(".page").forEach((page) => {
+    if (page !== welcomePage) {
+      page.classList.remove("active");
+    }
+  });
 
-  navigationButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      if (button.classList.contains("next-page")) {
-        currentPageIndex++;
-      } else if (button.classList.contains("prev-page")) {
-        currentPageIndex--;
-      } else if (button.classList.contains("next-chapter")) {
-        const targetId = button.dataset.target;
-        const targetPage = document.getElementById(targetId);
-        if (targetPage) {
-          currentPageIndex = Array.from(allPages).indexOf(targetPage);
-        }
-      } else if (button.classList.contains("prev-chapter")) {
-        const targetId = button.dataset.target;
-        const targetPage = document.getElementById(targetId);
-        if (targetPage) {
-          currentPageIndex = Array.from(allPages).indexOf(targetPage);
-        }
-      } else if (button.classList.contains("return-home")) {
-        currentPageIndex = 0;
+  // Start Journey button
+  document
+    .getElementById("start-journey-button")
+    .addEventListener("click", () => {
+      welcomePage.classList.remove("active");
+      if (dynamicallyRenderedPages.length > 0) {
+        dynamicallyRenderedPages[0].classList.add("active");
+      } else {
+        endOfChapter1.classList.add("active");
       }
-      showPage(currentPageIndex);
+    });
+
+  // Next / Prev buttons for chapter 1 memories
+  dynamicallyRenderedPages.forEach((page, index) => {
+    const nextButton = page.querySelector(".next-page");
+    const prevButton = page.querySelector(".prev-page");
+
+    if (nextButton) {
+      nextButton.addEventListener("click", () => {
+        page.classList.remove("active");
+        if (index < dynamicallyRenderedPages.length - 1) {
+          dynamicallyRenderedPages[index + 1].classList.add("active");
+        } else {
+          endOfChapter1.classList.add("active");
+        }
+      });
+    }
+
+    if (prevButton) {
+      prevButton.addEventListener("click", () => {
+        page.classList.remove("active");
+        if (index > 0) {
+          dynamicallyRenderedPages[index - 1].classList.add("active");
+        } else {
+          welcomePage.classList.add("active");
+        }
+      });
+    }
+  });
+
+  // Next Chapter buttons
+  document.querySelectorAll(".next-chapter").forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.target;
+      const targetChapter = document.getElementById(targetId);
+      const currentPage = button.closest(".page");
+
+      if (targetChapter && currentPage) {
+        currentPage.classList.remove("active");
+        targetChapter.classList.add("active");
+      }
+    });
+  });
+
+  // Prev Chapter buttons
+  document.querySelectorAll(".prev-chapter").forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.target;
+      const targetChapter = document.getElementById(targetId);
+      const currentPage = button.closest(".page");
+
+      if (targetChapter && currentPage) {
+        currentPage.classList.remove("active");
+        targetChapter.classList.add("active");
+      }
+    });
+  });
+
+  // Return Home buttons
+  document.querySelectorAll(".return-home").forEach((button) => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".page.active").forEach((page) => {
+        page.classList.remove("active");
+      });
+      welcomePage.classList.add("active");
+    });
+  });
+
+  // What's Next buttons
+  document.querySelectorAll(".whats-next-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const choice = button.dataset.choice;
+      const currentPage = button.closest(".page");
+
+      if (currentPage) {
+        currentPage.classList.remove("active");
+      }
+
+      if (choice === "continue") {
+        document.getElementById("final-page").classList.add("active");
+      } else if (choice === "break") {
+        // Handle break option if needed
+        document.getElementById("final-page").classList.add("active");
+      }
     });
   });
 });
